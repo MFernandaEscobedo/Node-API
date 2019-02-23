@@ -1,0 +1,21 @@
+{
+  "name": "moga-back",
+  "version": "1.0.0",
+  "description": "API de la aplicacion web de gestion e inventario de la empresa MOGA",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Luis Angel Mendoza Lucio",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "mongoose": "^5.4.15"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
