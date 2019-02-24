@@ -18,6 +18,7 @@ api.get('/categoria/:id', CategoriaController.getCategoriaById);
 api.post('/categoria', CategoriaController.postCategoria);
 api.put('/categoria/:id', CategoriaController.putCategoria);
 api.delete('/categoria/:id', CategoriaController.deleteCategoria);
+api.get('/categorias/:categoriesId/productos', CategoriaController.getProductsByCategories);
 
 // Compra
 

@@ -10,7 +10,7 @@ const ProductoSchema = Schema({
     costo: Number,
     utilidad: Number,
     precio_venta: Number,
-    modelo: Number,
+    modelo: String,
     descripcion: String,
     fecha: {type: Date, default: Date.now()},
     categorias: []
