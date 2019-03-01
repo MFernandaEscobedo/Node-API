@@ -26,6 +26,7 @@ function postProveedor(req, res) {
     let proveedor = new ProveedorSchema();
     proveedor.telefono_empresa = datos.telefono_empresa;
     proveedor.nombre_empresa = datos.nombre_empresa;
+    proveedor.email_empresa = datos.email_empresa;
     proveedor.pais = datos.pais;
     proveedor.estado = datos.estado;
     proveedor.ciudad = datos.ciudad;

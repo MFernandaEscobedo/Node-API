@@ -28,6 +28,7 @@ async function postCompra(req, res) {
     const contadorCompras = compras.length;
     compra.id_proveedor = datos.id_proveedor;
     compra.numero_compra = contadorCompras + 1;
+    compra.total = datos.total;
     compra.productos = datos.productos;
 
     compra.save((err, buyStore) => {

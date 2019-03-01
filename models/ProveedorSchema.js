@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const ProveedorSchema = Schema({
     telefono_empresa: String,
     nombre_empresa: String,
+    email_empresa: String,
     pais: String,
     estado: String,
     ciudad: String,

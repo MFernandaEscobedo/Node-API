@@ -25,8 +25,8 @@ function getCategoriaById(req, res) {
 function postCategoria(req, res) {
     console.log('post/categoria');
     let categoria = new CategoriaSchema();
+    console.log(req.body);
     categoria.nombre = req.body.nombre;
-    categoria.descripcion = req.body.descripcion;
 
     categoria.save((err, categoryStore) => {
         if(err) {
@@ -39,7 +39,6 @@ function postCategoria(req, res) {
 function putCategoria(req, res) {
     const id = req.params.id;
     let datosActualizados = req.body;
-    console.log(datosActualizados)
     CategoriaSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedCategory) => {
         if(err) {
             res.status(500).send(`error al actualizar la categoria: ${err}`);
