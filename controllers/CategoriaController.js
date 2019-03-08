@@ -48,7 +48,6 @@ function putCategoria(req, res) {
             for(let j = 0; j < productByCategory[i].categorias.length; j++) {
                 productByCategory[i].categorias[j].nombre = datosActualizados.nombre;
                 const updateCategoryInProduct = await ProductoSchema.findOneAndUpdate({"_id": productByCategory[i]._id}, {categorias: productByCategory[i].categorias[j]})
-                console.log(updateCategoryInProduct);
             }
         }
         res.status(200).send(updatedCategory);
