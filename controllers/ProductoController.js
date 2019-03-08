@@ -54,7 +54,12 @@ async function postProducto(req, res) {
         producto.precio_venta = datos.costo + datos.utilidad;
         producto.modelo = datos.modelo;
         producto.descripcion = datos.descripcion;
+        producto.presentacion = datos.presentacion;
         producto.categorias = datos.categorias;
+        producto.imagen = datos.imagen;
+        producto.estado = true;
+        producto.stock_minimo = datos.stock_minimo;
+        producto.stock_maximo = datos.stock_maximo;
 
         producto.save((err, productStore) => {
             if (err) {

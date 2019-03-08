@@ -60,4 +60,8 @@ api.post('/venta', VentaController.postVenta);
 api.put('/venta/:id', VentaController.putVenta);
 api.delete('/venta/:id', VentaController.deleteVenta);
 
+api.post('/upload-image', (req, res) => {
+    res.send(req.files);
+});
+
 module.exports = api;
