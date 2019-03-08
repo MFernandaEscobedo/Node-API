@@ -57,7 +57,6 @@ async function postProducto(req, res) {
         producto.presentacion = datos.presentacion;
         producto.categorias = datos.categorias;
         producto.imagen = datos.imagen;
-        producto.estado = true;
         producto.stock_minimo = datos.stock_minimo;
         producto.stock_maximo = datos.stock_maximo;
 
@@ -70,7 +69,7 @@ async function postProducto(req, res) {
     }
 }
 
-function updateHelper(datos) {
+function updateHelper(datos, id) {
     ProductoSchema.findOneAndUpdate({
         "_id": id
     }, datos, {
@@ -85,33 +84,12 @@ function updateHelper(datos) {
 async function putProducto(req, res) {
     const id = req.params.id;
     const datosActualizados = req.body;
-    if (datosActualizados.codigo) {
-        const productosPorCodigo = await ProductoSchema.find({
-            "codigo": datosActualizados.codigo
-        });
-        if (productosPorCodigo.length > 0) {
-            if (productosPorCodigo[0].codigo !== datosActualizados.codigo) {
-                let numeroStock = productosPorCodigo[0].stock;
-                ProductoSchema.findOneAndUpdate({
-                    "codigo": datosActualizados.codigo
-                }, {
-                    "stock": numeroStock + 1
-                }, {
-                    new: true
-                }, (err, updatedProduct) => {
-                    if (err) {
-                        res.status(500).send(`error al actualizar el producto: ${err}`);
-                    }
-                    res.status(200).send(updatedProduct);
-                });
-            }
-            res.send('el producto ya tiene el mismo valor que quieres poner');
-        } else {
-            updateHelper(datosActualizados);
+    ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
+        if (err) {
+            res.status(500).send(`error al actualizar el producto: ${err}`);
         }
-    } else {
-        updateHelper(datosActualizados);
-    }
+        res.status(200).send(updatedProduct);
+    });
 }
 
 function deleteProducto(req, res) {

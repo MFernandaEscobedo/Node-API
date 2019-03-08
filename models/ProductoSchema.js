@@ -13,7 +13,6 @@ const ProductoSchema = Schema({
     utilidad: Number,
     precio_venta: Number,
     presentacion: String,
-    estado: {type: Boolean, default: true},
     imagen: String,
     modelo: String,
     descripcion: String,
