@@ -39,9 +39,17 @@ function postCategoria(req, res) {
 function putCategoria(req, res) {
     const id = req.params.id;
     let datosActualizados = req.body;
-    CategoriaSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedCategory) => {
+    CategoriaSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, async (err, updatedCategory) => {
         if(err) {
             res.status(500).send(`error al actualizar la categoria: ${err}`);
+        }
+        const productByCategory = await ProductoSchema.find({categorias: {$elemMatch: {_id: id}}});
+        for(let i = 0; i < productByCategory.length; i++) {
+            for(let j = 0; j < productByCategory[i].categorias.length; j++) {
+                productByCategory[i].categorias[j].nombre = datosActualizados.nombre;
+                const updateCategoryInProduct = await ProductoSchema.findOneAndUpdate({"_id": productByCategory[i]._id}, {categorias: productByCategory[i].categorias[j]})
+                console.log(updateCategoryInProduct);
+            }
         }
         res.status(200).send(updatedCategory);
     });
