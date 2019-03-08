@@ -65,11 +65,24 @@ function getProductsByCategories(req, res) {
     }
 }
 
+async function findCategory(req, res) {
+    let value = req.params.valor;
+    // value = value.toLowerCase();
+    // let regex = new Regex
+    CategoriaSchema.find({"nombre": value}, (err, categories) => {
+        if(err) {
+            res.status(500).send('error al buscar categorias');
+        }
+        res.status(200).send(categories);
+    });
+}
+
 module.exports = {
     getCategorias,
     getCategoriaById,
     postCategoria,
     putCategoria,
     deleteCategoria,
-    getProductsByCategories
+    getProductsByCategories,
+    findCategory
 }
