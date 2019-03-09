@@ -64,10 +64,21 @@ function deleteProveedor(req, res) {
     });
 }
 
+async function findProvider(req, res) {
+    let value = req.params.valor;
+    ProveedorSchema.find({"nombre": {$regex: ".*" + value + ".*", $options: "mi"}}, (err, proveedores) => {
+        if(err) {
+            res.status(500).send('error al buscar proveedores');
+        }
+        res.status(200).send(proveedores);
+    });
+}
+
 module.exports = {
     getProveedores,
     getProveedorById,
     postProveedor,
     putProveedor,
-    deleteProveedor
+    deleteProveedor,
+    findProvider
 }

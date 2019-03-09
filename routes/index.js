@@ -44,6 +44,7 @@ api.get('/proveedor/:id', ProveedorController.getProveedorById);
 api.post('/proveedor', ProveedorController.postProveedor);
 api.put('/proveedor/:id', ProveedorController.putProveedor);
 api.delete('/proveedor/:id', ProveedorController.deleteProveedor);
+api.get('buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Usuario
 

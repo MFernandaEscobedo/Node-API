@@ -74,8 +74,6 @@ function getProductsByCategories(req, res) {
 
 async function findCategory(req, res) {
     let value = req.params.valor;
-    console.log(value);
-    // const regex = new RegExp("/"+ value +"/", "gmi");
     CategoriaSchema.find({"nombre": {$regex: ".*" + value + ".*", $options: "mi"}}, (err, categories) => {
         if(err) {
             res.status(500).send('error al buscar categorias');
