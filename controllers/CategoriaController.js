@@ -6,7 +6,7 @@ const ProductoSchema = require('./../models/ProductoSchema');
 function getCategorias(req, res) {
     CategoriaSchema.find({}, (err, categorias) => {
         if(err) {
-            res.status(500).send(`error al obtener las categorias: ${err}`);
+            res.status(500).send(`error al obtener todas las categorias: ${err}`);
         }
         res.status(200).send(categorias);
     });
