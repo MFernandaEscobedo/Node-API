@@ -13,7 +13,7 @@ function getProductos(req, res) {
 
 function getProductoById(req, res) {
     const id = req.params.id;
-    ProductoSchema.findById(id, (err, producto) => {
+    ProductoSchema.findOne({"_id": id}, (err, producto) => {
         if (err) {
             res.status(500).send(`error al obtener el producto: ${err}`);
         }
@@ -32,7 +32,6 @@ async function postProducto(req, res) {
     });
     if (productosPorCodigo.length > 0) {
         let numeroStock = productosPorCodigo[0].stock;
-        console.log(numeroStock);
         ProductoSchema.findOneAndUpdate({
             "codigo": datos.codigo
         }, {
