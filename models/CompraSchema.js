@@ -11,7 +11,9 @@ const CompraSchema = Schema({
     fecha: {type: Date, default: Date.now()},
     numero_compra: Number,
     total: Number,
-    productos: []
+    productos: [],
+    marca: {type: Boolean, default: false},
+    comentario_marca: {type: String, default: ''}
 });
 
 module.exports = mongoose.model('CompraSchema', CompraSchema);
