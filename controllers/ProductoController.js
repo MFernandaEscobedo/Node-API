@@ -31,6 +31,7 @@ async function postProducto(req, res) {
         "codigo": datos.codigo
     });
     if (productosPorCodigo.length > 0) {
+      console.log('aumentando el stock server');
         let numeroStock = productosPorCodigo[0].stock;
         ProductoSchema.findOneAndUpdate({
             "codigo": datos.codigo
@@ -50,7 +51,7 @@ async function postProducto(req, res) {
         producto.stock = 1;
         producto.costo = datos.costo;
         producto.utilidad = datos.utilidad;
-        producto.precio_venta = datos.costo + datos.utilidad;
+        producto.precio_venta = datos.precio_venta;
         producto.modelo = datos.modelo;
         producto.descripcion = datos.descripcion;
         producto.presentacion = datos.presentacion;
