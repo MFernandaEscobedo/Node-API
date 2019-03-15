@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CompraSchema = Schema({
-    id_proveedor: String,
+    proveedor: {
+      nombre: String,
+      id: String
+    },
     fecha: {type: Date, default: Date.now()},
     numero_compra: Number,
     total: Number,

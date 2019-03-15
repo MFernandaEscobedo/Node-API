@@ -28,6 +28,7 @@ api.get('/compra/:id', CompraController.getCompraById);
 api.post('/compra', CompraController.postCompra);
 api.put('/compra/:id', CompraController.putCompra);
 api.delete('/compra/:id', CompraController.deleteCompra);
+api.get('/buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Producto
 
