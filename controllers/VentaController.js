@@ -22,21 +22,21 @@ function getVentaById(req, res) {
 }
 
 async function postVenta(req, res) {
-    const datos = req.body;
-    let venta = new VentaSchema();
-    const ventas = await VentaSchema.find();
-    const contadorVentas = ventas.length;
-    venta.numero_factura = contadorVentas + 1;
-    venta.total = datos.total;
-    venta.id_usuario = datos.id_usuario;
-    venta.productos = datos.productos;
+  let venta = new VentaSchema();
+  const datos = req.body;
+  const ventas = await VentaSchema.find();
+  const contadorVentas = ventas.length;
+  venta.proveedor = datos.proveedor;
+  venta.numero_venta = contadorVentas + 1;
+  venta.total = datos.total;
+  venta.productos = datos.productos;
 
-    venta.save((err, storeSale) => {
-        if(err) {
-            res.status(500).send(`error al guardar la venta: ${err}`);
-        }
-        res.status(200).send(storeSale);
-    });
+  venta.save((err, saleStore) => {
+      if(err) {
+          res.status(500).send(`error al guardar nueva venta: ${err}`);
+      }
+      res.status(200).send(saleStore);
+  });
 }
 
 function putVenta(req, res) {

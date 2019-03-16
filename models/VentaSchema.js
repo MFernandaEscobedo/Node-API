@@ -4,11 +4,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VentaSchema = Schema({
-    numero_factura: Number,
-    total: Number,
-    fecha: {type: Date, default: Date.now()},
-    id_usuario: String,
-    productos: []
+  proveedor: {
+    nombre: String,
+    id: String
+  },
+  fecha: {type: Date, default: Date.now()},
+  numero_venta: Number,
+  total: Number,
+  productos: [],
+  marca: {type: Boolean, default: false},
+  comentario_marca: {type: String, default: ''}
 });
 
 module.exports = mongoose.model('VentaSchema', VentaSchema);
