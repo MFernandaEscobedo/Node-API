@@ -10,7 +10,7 @@ const ProductoController = require('./../controllers/ProductoController');
 const ProveedorController = require('./../controllers/ProveedorController');
 const UsuarioController = require('./../controllers/UsuarioController');
 const VentaController = require('./../controllers/VentaController');
-
+const SucursalController = require('./../controllers/SucursalController');
 // Categoria
 
 api.get('/categorias', CategoriaController.getCategorias);
@@ -62,6 +62,14 @@ api.get('/venta/:id', VentaController.getVentaById);
 api.post('/venta', VentaController.postVenta);
 api.put('/venta/:id', VentaController.putVenta);
 api.delete('/venta/:id', VentaController.deleteVenta);
+
+// sucursal
+
+api.get('/sucursales', SucursalController.getSucursales);
+api.get('/sucursal/:id', SucursalController.getSucursalById);
+api.post('/sucursal', SucursalController.postSucursal);
+api.put('/sucursal', SucursalController.putSucursal);
+api.delete('/sucursal', SucursalController.deleteSucursal);
 
 api.post('/upload-image', (req, res) => {
     res.send(req.files);
