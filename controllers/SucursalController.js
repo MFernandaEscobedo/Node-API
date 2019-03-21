@@ -1,6 +1,6 @@
 'use strict';
 
-const SucursalSchema from './../models/SucursalSchema';
+const SucursalSchema  =  require('./../models/SucursalSchema');
 
 function getSucursales(req, res) {
   SucursalSchema.find({}, (err, sucuarsales) => {
@@ -22,11 +22,12 @@ function getSucursalById(req, res) {
 }
 
 function postSucursal(req, res) {
-  let sucuarsal = new SucursalSchema();
+  let sucursal = new SucursalSchema();
   const body = req.body;
   sucursal.nombre = body.nombre;
   sucursal.pais = body.pais;
   sucursal.estado = body.estado;
+  sucursal.ciudad = body.ciudad;
   sucursal.direccion = body.direccion;
 
   sucursal.save((err, sucursalStorage) => {
@@ -40,7 +41,7 @@ function postSucursal(req, res) {
 function putSucursal(req, res) {
   let id = req.params.id;
   let body = req.body;
-  SucursalSchema.findOneAndUpdate({"_id":id}, body, {new: true} (err, updatedSucursal) => {
+  SucursalSchema.findOneAndUpdate({"_id":id}, body, {new: true}, (err, updatedSucursal) => {
     if(err) {
       res.status(500).send(`error al actualizar la sucursal: ${err}`);
     }
