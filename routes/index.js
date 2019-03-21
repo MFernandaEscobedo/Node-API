@@ -68,8 +68,8 @@ api.delete('/venta/:id', VentaController.deleteVenta);
 api.get('/sucursales', SucursalController.getSucursales);
 api.get('/sucursal/:id', SucursalController.getSucursalById);
 api.post('/sucursal', SucursalController.postSucursal);
-api.put('/sucursal', SucursalController.putSucursal);
-api.delete('/sucursal', SucursalController.deleteSucursal);
+api.put('/sucursal/:id', SucursalController.putSucursal);
+api.delete('/sucursal/:id', SucursalController.deleteSucursal);
 
 api.post('/upload-image', (req, res) => {
     res.send(req.files);
