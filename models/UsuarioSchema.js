@@ -6,10 +6,11 @@ const Schema = mongoose.Schema;
 const UsuarioSchema = Schema({
     nombre: String,
     contrasena: String,
-    rol: {type: String, enum: ['empleado', 'administrador']},
+    rol: [],
     email: String,
     telefono: String,
-    imagen: String,
+    imagen: {type: String, default: 'http://localhost:3000/images/profile-default.png'},
+    sucursal: {type: String, default: 'none'},
     domicilio: String,
     fecha: {type: Date, default: Date.now()},
 });

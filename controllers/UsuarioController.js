@@ -29,7 +29,7 @@ function postUsuario(req, res) {
     usuario.rol = datos.rol;
     usuario.email = datos.email;
     usuario.telefono = datos.telefono;
-    usuario.imagen = datos.imagen;
+    // usuario.imagen = datos.imagen;
     usuario.domicilio = datos.domicilio;
 
     usuario.save((err, userStore) => {
