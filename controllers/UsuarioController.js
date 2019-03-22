@@ -45,16 +45,16 @@ function verifyPermissionCategory(req, res) {
     let payload = jwt.verify(token, 'clavesecreta');
     UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
       if(err) {
-        res.status(500).send('error al decodificar el token');
+        res.status(500).end('error al decodificar el token');
       }
       for(let i = 0; i < user.rol.length; i++) {
         if(user.rol[i].modulo === 'categorias') {
           if(user.rol[i].visualizacion === true) {
-            res.status(200).send('este men minimo puede ver categorias');
+            return res.status(200).send(true);
           }
         }
       }
-      res.status(401).send('este men no puede ni ver las categorias');
+      return res.status(401).send(false);
     });
   }
 }
