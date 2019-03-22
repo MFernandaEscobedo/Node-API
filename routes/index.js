@@ -3,6 +3,9 @@
 const express = require('express');
 const api = express.Router();//es un objeto lo que devuelve
 
+// importar los guards de rutas
+const guards = require('./guards');
+
 // importamos los controladores
 const CategoriaController = require('./../controllers/CategoriaController');
 const CompraController = require('./../controllers/CompraController');
@@ -48,12 +51,13 @@ api.delete('/proveedor/:id', ProveedorController.deleteProveedor);
 api.get('buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Usuario
-
+api.get('/usuario/veri-cat', UsuarioController.verifyPermissionCategory);
 api.get('/usuarios', UsuarioController.getUsuarios);
 api.get('/usuario/:id', UsuarioController.getUsuarioById);
 api.post('/usuario', UsuarioController.postUsuario);
 api.put('/usuario/:id', UsuarioController.putUsuario);
 api.delete('/usuario/:id', UsuarioController.deleteUsuario);
+api.post('/usuario/login', UsuarioController.login);
 
 // Venta
 
