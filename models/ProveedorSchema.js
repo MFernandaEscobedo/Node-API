@@ -15,6 +15,7 @@ const ProveedorSchema = Schema({
     nombre: String,
     email: String,
     fecha: {type: Date, default: Date.now()},
+    sucursal: {type: String, default: 'none'}
 });
 
 module.exports = mongoose.model('ProveedorSchema', ProveedorSchema);

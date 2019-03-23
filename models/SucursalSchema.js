@@ -9,6 +9,7 @@ const SucursalSchema = Schema({
   estado: String,
   ciudad: String,
   direccion: String,
+  sucursal: {type: String, default: 'none'},
   fecha: {type: Date, default: Date.now()}
 });
 

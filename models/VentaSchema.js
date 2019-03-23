@@ -13,6 +13,7 @@ const VentaSchema = Schema({
   total: Number,
   productos: [],
   marca: {type: Boolean, default: false},
+  sucursal: {type: String, default: 'none'},
   comentario_marca: {type: String, default: ''}
 });
 

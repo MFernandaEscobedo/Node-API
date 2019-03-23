@@ -17,6 +17,7 @@ const ProductoSchema = Schema({
     modelo: String,
     descripcion: String,
     fecha: {type: Date, default: Date.now()},
+    sucursal: {type: String, default: 'none'},
     categorias: []
 });
 
