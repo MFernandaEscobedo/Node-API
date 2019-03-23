@@ -25,7 +25,7 @@ function login(req, res) {
     };
     let token = jwt.sign(payload, 'clavesecreta');
     console.log(jwt);
-    res.status(200).send({token});
+    res.status(200).send({token, user});
   });
 }
 
@@ -37,26 +37,6 @@ function getUsuarioById(req, res) {
         }
         res.status(200).send(usuario);
     });
-}
-
-function verifyPermissionCategory(req, res) {
-  let token = req.headers['authorization'].split(' ')[1];
-  if(token) {
-    let payload = jwt.verify(token, 'clavesecreta');
-    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
-      if(err) {
-        res.status(500).end('error al decodificar el token');
-      }
-      for(let i = 0; i < user.rol.length; i++) {
-        if(user.rol[i].modulo === 'categorias') {
-          if(user.rol[i].visualizacion === true) {
-            return res.status(200).send(true);
-          }
-        }
-      }
-      return res.status(401).send(false);
-    });
-  }
 }
 
 function verifyPermission(req, res) {
@@ -77,6 +57,23 @@ function verifyPermission(req, res) {
         }
       }
       return res.status(401).send(false);
+    });
+  }
+}
+
+function verifyValidToken(req, res) {
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        res.status(500).end('error al decodificar el token');
+      }
+      if(user) {
+        return res.status(200).send(true);
+      } else {
+        return res.status(401).send(false);
+      }
     });
   }
 }
@@ -128,6 +125,6 @@ module.exports = {
     putUsuario,
     deleteUsuario,
     login,
-    verifyPermissionCategory,
+    verifyValidToken,
     verifyPermission
 }

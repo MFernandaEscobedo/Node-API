@@ -51,7 +51,7 @@ api.delete('/proveedor/:id', ProveedorController.deleteProveedor);
 api.get('buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Usuario
-api.get('/usuario/veri-cat', UsuarioController.verifyPermissionCategory);
+api.get('/usuario/token', UsuarioController.verifyValidToken);
 api.get('/usuarios', UsuarioController.getUsuarios);
 api.get('/usuario/:id', UsuarioController.getUsuarioById);
 api.post('/usuario', UsuarioController.postUsuario);
