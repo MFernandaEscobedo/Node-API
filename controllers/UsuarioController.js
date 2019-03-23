@@ -13,19 +13,24 @@ function getUsuarios(req, res) {
 }
 
 function login(req, res) {
+  // hay que verificar que el usuario ya tenga una sucursal
   let userData = req.body;
   UsuarioSchema.findOne({email: userData.email, contrasena: userData.contrasena}, (err, user) => {
     if(err) {
-        res.status(500).send(`error: ${err}`);
+        return res.status(500).send(`error: ${err}`);
     } else if(!user) {
-      res.status(401).send(`error de autenticación`);
+      return res.status(401).send({typeError: 1, msg: 'Error de autenticación'});
+    } else {
+      if(user.sucursal !== 'none') {
+        let payload = {
+          subject: user._id
+        };
+        let token = jwt.sign(payload, 'clavesecreta');
+        return res.status(200).send({token, user});
+      } else {
+        return res.status(401).send({typeError: 5, msg: 'Aun no estas asignado a ninguna sucursal'});
+      }
     }
-    let payload = {
-      subject: user._id
-    };
-    let token = jwt.sign(payload, 'clavesecreta');
-    console.log(jwt);
-    res.status(200).send({token, user});
   });
 }
 
