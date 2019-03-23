@@ -11,7 +11,11 @@ const UsuarioSchema = Schema({
     telefono: String,
     imagen: {type: String, default: 'http://localhost:3000/images/profile-default.png'},
     sucursal: {type: String, default: 'none'},
-    domicilio: String,
+    pais: String,
+    estado: String,
+    ciudad: String,
+    colonia: String,
+    calle: String,
     fecha: {type: Date, default: Date.now()},
 });
 
