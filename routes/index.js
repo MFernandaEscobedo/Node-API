@@ -58,6 +58,7 @@ api.post('/usuario', UsuarioController.postUsuario);
 api.put('/usuario/:id', UsuarioController.putUsuario);
 api.delete('/usuario/:id', UsuarioController.deleteUsuario);
 api.post('/usuario/login', UsuarioController.login);
+api.post('/usuario/verificar', UsuarioController.verifyPermission);
 
 // Venta
 

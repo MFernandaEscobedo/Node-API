@@ -59,6 +59,28 @@ function verifyPermissionCategory(req, res) {
   }
 }
 
+function verifyPermission(req, res) {
+  let permission = req.body.permission;
+  let module = req.body.module;
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        res.status(500).end('error al decodificar el token');
+      }
+      for(let i = 0; i < user.rol.length; i++) {
+        if(user.rol[i].modulo === module) {
+          if(user.rol[i][permission] === true) {
+            return res.status(200).send(true);
+          }
+        }
+      }
+      return res.status(401).send(false);
+    });
+  }
+}
+
 function postUsuario(req, res) {
     const datos = req.body;
     let usuario = new UsuarioSchema();
@@ -106,5 +128,6 @@ module.exports = {
     putUsuario,
     deleteUsuario,
     login,
-    verifyPermissionCategory
+    verifyPermissionCategory,
+    verifyPermission
 }
