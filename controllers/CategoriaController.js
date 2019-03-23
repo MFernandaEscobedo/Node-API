@@ -2,14 +2,27 @@
 
 const CategoriaSchema = require('./../models/CategoriaSchema');
 const ProductoSchema = require('./../models/ProductoSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getCategorias(req, res) {
-    CategoriaSchema.find({}, (err, categorias) => {
-        if(err) {
-            res.status(500).send(`error al obtener todas las categorias: ${err}`);
-        }
-        res.status(200).send(categorias);
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(404).send('no se encontro el usuario');
+      }
+      if(user) {
+        CategoriaSchema.find({sucursal: user.sucursal}, (err, categorias) => {
+            if(err) {
+                res.status(500).send(`error al obtener todas las categorias: ${err}`);
+            }
+            res.status(200).send(categorias);
+        });
+      }
     });
+  }
 }
 
 function getCategoriaById(req, res) {
@@ -27,6 +40,7 @@ function postCategoria(req, res) {
     let categoria = new CategoriaSchema();
     console.log(req.body);
     categoria.nombre = req.body.nombre;
+    categoria.sucursal = req.body.sucursal;
 
     categoria.save((err, categoryStore) => {
         if(err) {
@@ -68,7 +82,7 @@ function getProductsByCategories(req, res) {
     //api/categorias/1-2-3/productos
     let idCategorias = req.params.idCategorias.split("-");
     for(let i = 0; i < idCategorias.length; i++) {
-        
+
     }
 }
 
