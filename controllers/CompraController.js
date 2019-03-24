@@ -43,6 +43,7 @@ async function postCompra(req, res) {
     compra.numero_compra = contadorCompras + 1;
     compra.total = datos.total;
     compra.productos = datos.productos;
+    compra.sucursal = datos.sucursal;
 
     compra.save((err, buyStore) => {
         if(err) {

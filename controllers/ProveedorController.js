@@ -1,14 +1,27 @@
 'use strict';
 
 const ProveedorSchema = require('./../models/ProveedorSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getProveedores(req, res) {
-    ProveedorSchema.find({}, (err, proveedores) => {
-        if(err) {
-            res.status(500).send(`error al obtener los proveedores: ${err}`);
-        }
-        res.status(200).send(proveedores);
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(404).send('no se encontro el usuario');
+      }
+      if(user) {
+        ProveedorSchema.find({sucursal: user.sucursal}, (err, proveedores) => {
+            if(err) {
+                res.status(500).send(`error al obtener los proveedores: ${err}`);
+            }
+            res.status(200).send(proveedores);
+        });
+      }
     });
+  }
 }
 
 function getProveedorById(req, res) {
@@ -34,6 +47,7 @@ function postProveedor(req, res) {
     proveedor.telefono = datos.telefono;
     proveedor.nombre = datos.nombre;
     proveedor.email = datos.email;
+    proveedor.sucursal = datos.sucursal;
 
     proveedor.save((err, storeProvider) => {
         if(err) {
