@@ -1,14 +1,27 @@
 'use strict';
 
 const ProductoSchema = require('./../models/ProductoSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getProductos(req, res) {
-    ProductoSchema.find({}, (err, productos) => {
-        if (err) {
-            res.status(500).send(`error al obtener los productos: ${err}`);
-        }
-        res.status(200).send(productos);
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(404).send('no se encontro el usuario');
+      }
+      if(user) {
+        ProductoSchema.find({sucursal: user.sucursal}, (err, productos) => {
+            if(err) {
+                res.status(500).send(`error al obtener todas los productos: ${err}`);
+            }
+            res.status(200).send(productos);
+        });
+      }
     });
+  }
 }
 
 function getProductoById(req, res) {
@@ -59,6 +72,7 @@ async function postProducto(req, res) {
         producto.imagen = datos.imagen;
         producto.stock_minimo = datos.stock_minimo;
         producto.stock_maximo = datos.stock_maximo;
+        producto.sucursal = datos.sucursal;
 
         producto.save((err, productStore) => {
             if (err) {

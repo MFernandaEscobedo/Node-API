@@ -1,14 +1,27 @@
 'use strict';
 
 const SucursalSchema  =  require('./../models/SucursalSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getSucursales(req, res) {
-  SucursalSchema.find({}, (err, sucuarsales) => {
-    if(err) {
-      res.status(500).send(`error al obtener todas las sucuarsales: ${err}`);
-    }
-    res.status(200).send(sucuarsales);
-  });
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(404).send('no se encontro el usuario');
+      }
+      if(user) {
+        SucursalSchema.find({}, (err, sucursales) => {
+            if(err) {
+                return res.status(500).send(`error al obtener todas las sucursales: ${err}`);
+            }
+            return res.status(200).send(sucursales);
+        });
+      }
+    });
+  }
 }
 
 function getSucursalById(req, res) {
