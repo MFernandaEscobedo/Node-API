@@ -1,14 +1,27 @@
 'use strict';
 
 const VentaSchema = require('./../models/VentaSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getVentas(req, res) {
-    VentaSchema.find({}, (err, ventas) => {
-        if(err) {
-            res.status(500).send(`error al obtener las ventas: ${err}`);
-        }
-        res.status(200).send(ventas);
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(500).send('error al obtener el usuario');
+      }
+      if(user) {
+        VentaSchema.find({sucursal: user.sucursal}, (err, ventas) => {
+            if(err) {
+                res.status(500).send(`error al obtener las ventas: ${err}`);
+            }
+            res.status(200).send(ventas);
+        });
+      }
     });
+  }
 }
 
 function getVentaById(req, res) {
@@ -26,10 +39,11 @@ async function postVenta(req, res) {
   const datos = req.body;
   const ventas = await VentaSchema.find();
   const contadorVentas = ventas.length;
-  venta.proveedor = datos.proveedor;
+  venta.empleado = datos.empleado;
   venta.numero_venta = contadorVentas + 1;
   venta.total = datos.total;
   venta.productos = datos.productos;
+  venta.sucursal = datos.sucursal;
 
   venta.save((err, saleStore) => {
       if(err) {

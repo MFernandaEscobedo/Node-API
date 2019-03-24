@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const VentaSchema = Schema({
-  proveedor: {
+  empleado: {
     nombre: String,
     id: String
   },
