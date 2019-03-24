@@ -1,14 +1,27 @@
 'use strict';
 
 const CompraSchema = require('./../models/CompraSchema');
+const UsuarioSchema = require('./../models/UsuarioSchema');
+const jwt = require('jsonwebtoken');
 
 function getCompras(req, res) {
-    CompraSchema.find({}, (err, compras) => {
-        if(err) {
-            res.status(500).send(`error al obtener las compras: ${err}`);
-        }
-        res.status(200).send(compras);
+  let token = req.headers['authorization'].split(' ')[1];
+  if(token) {
+    let payload = jwt.verify(token, 'clavesecreta');
+    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+      if(err) {
+        return res.status(404).send('no se puede encontrar e usuario');
+      }
+      if(user) {
+        CompraSchema.find({sucursal: user.sucursal}, (err, compras) => {
+            if(err) {
+                return res.status(500).send(`error al obtener las compras: ${err}`);
+            }
+            return res.status(200).send(compras);
+        });
+      }
     });
+  }
 }
 
 function getCompraById(req, res) {
