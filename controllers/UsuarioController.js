@@ -28,7 +28,7 @@ function login(req, res) {
         let token = jwt.sign(payload, 'clavesecreta');
         return res.status(200).send({token, user});
       } else {
-        return res.status(401).send({typeError: 5, msg: 'Aun no estas asignado a ninguna sucursal'});
+        return res.status(401).send({typeError: 5, msg: 'No estas asignado a alguna sucursal'});
       }
     }
   });
@@ -67,6 +67,7 @@ function verifyPermission(req, res) {
 }
 
 function verifyValidToken(req, res) {
+  console.log('si')
   let token = req.headers['authorization'].split(' ')[1];
   if(token) {
     let payload = jwt.verify(token, 'clavesecreta');
@@ -80,6 +81,8 @@ function verifyValidToken(req, res) {
         return res.status(401).send(false);
       }
     });
+  } else {
+    return res.status(401).send(false);
   }
 }
 
@@ -91,7 +94,7 @@ function postUsuario(req, res) {
     usuario.rol = datos.rol;
     usuario.email = datos.email;
     usuario.telefono = datos.telefono;
-    
+
     usuario.save((err, userStore) => {
         if(err) {
             res.status(500).send(`error al guardar nuevo usuario: ${err}`);
