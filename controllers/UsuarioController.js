@@ -63,6 +63,8 @@ function verifyPermission(req, res) {
       }
       return res.status(401).send(false);
     });
+  } else {
+    return res.status(401).send(false);
   }
 }
 
