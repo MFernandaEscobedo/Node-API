@@ -64,7 +64,7 @@ function verifyPermission(req, res) {
       return res.status(401).send(false);
     });
   } else {
-    return res.status(401).send(false);
+    return res.status(500).send(false);
   }
 }
 
@@ -84,7 +84,7 @@ function verifyValidToken(req, res) {
       }
     });
   } else {
-    return res.status(401).send(false);
+    return res.status(500).send(false);
   }
 }
 
