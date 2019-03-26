@@ -34,7 +34,7 @@ api.delete('/compra/:id', CompraController.deleteCompra);
 api.get('/buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Producto
-
+api.get('/productos/:num/:offset', ProductoController.getProductos4);
 api.get('/productos', ProductoController.getProductos);
 api.get('/producto/:id', ProductoController.getProductoById);
 api.post('/producto', ProductoController.postProducto);
