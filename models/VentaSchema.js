@@ -12,9 +12,7 @@ const VentaSchema = Schema({
   numero_venta: Number,
   total: Number,
   productos: [],
-  marca: {type: Boolean, default: false},
-  sucursal: {type: String, default: 'none'},
-  comentario_marca: {type: String, default: ''}
+  sucursal: {type: String, default: 'none'}
 });
 
 module.exports = mongoose.model('VentaSchema', VentaSchema);

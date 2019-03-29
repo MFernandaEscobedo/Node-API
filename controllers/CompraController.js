@@ -66,7 +66,7 @@ function putCompra(req, res) {
 
 function deleteCompra(req, res) {
     const id = req.params.id;
-    CompraSchema.findOneAndDelete({"_id": id}, (err, deletedPurchase) => {
+    CompraSchema.findOneAndDelete({_id: id}, (err, deletedPurchase) => {
         if(err) {
             res.status(500).send(`error al eliminar compra: ${err}`);
         }

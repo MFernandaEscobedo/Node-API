@@ -16,7 +16,9 @@ const VentaController = require('./../controllers/VentaController');
 const SucursalController = require('./../controllers/SucursalController');
 // Categoria
 
+api.get('/categorias/length', CategoriaController.getCategoriasLength);
 api.get('/categorias', CategoriaController.getCategorias);
+api.get('/categorias/:num/:offset', CategoriaController.getCategoriasPagination);
 api.get('/categoria/:id', CategoriaController.getCategoriaById);
 api.post('/categoria', CategoriaController.postCategoria);
 api.put('/categoria/:id', CategoriaController.putCategoria);

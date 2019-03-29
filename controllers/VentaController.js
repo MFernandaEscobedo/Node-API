@@ -66,7 +66,7 @@ function putVenta(req, res) {
 
 function deleteVenta(req, res) {
     const id = req.params.id;
-    VentaSchema.findOneAndDelete({"_id": id}, (err, deletedSale) => {
+    VentaSchema.findOneAndDelete({_id: id}, (err, deletedSale) => {
         if(err) {
             res.status(500).send(`error al eliminar la venta: ${err}`);
         }
