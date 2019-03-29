@@ -110,14 +110,28 @@ function putCategoria(req, res) {
     });
 }
 
-function deleteCategoria(req, res) {
+async function deleteCategoria(req, res) {
     const id = req.params.id;
-    CategoriaSchema.findOneAndDelete({"_id": id}, (err, deletedCategory) => {
-        if(err) {
-            res.status(500).send(`error al eliminar la categoria: ${err}`);
+    let productosConEsaCategoria = [];
+    const productos = await ProductoSchema.find({});
+    for(let i = 0; i < productos.length; i++) {
+      for(let j = 0; j < productos[i].categorias.length; j++) {
+        let categoria = productos[i].categorias[j];
+        if(categoria._id === id) {
+          productosConEsaCategoria.push(productos[i]);
         }
-        res.status(200).send(deletedCategory);
-    });
+      }
+    }
+    if(productosConEsaCategoria.length > 0) {
+      return res.status(200).send({hasProducts: true, products: productosConEsaCategoria});
+    } else {
+      CategoriaSchema.findOneAndDelete({"_id": id}, (err, deletedCategory) => {
+          if(err) {
+              res.status(500).send(`error al eliminar la categoria: ${err}`);
+          }
+          res.status(200).send(deletedCategory);
+      });
+    }
 }
 
 function getProductsByCategories(req, res) {
