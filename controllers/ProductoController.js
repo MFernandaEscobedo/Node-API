@@ -141,12 +141,23 @@ function updateHelper(datos, id) {
 async function putProducto(req, res) {
     const id = req.params.id;
     const datosActualizados = req.body;
-    ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
-        if (err) {
-            res.status(500).send(`error al actualizar el producto: ${err}`);
-        }
-        res.status(200).send(updatedProduct);
-    });
+    const product = await ProductoSchema.findOne({_id: id});
+    console.log(product)
+    const minStock = product.stock_minimo;
+    const maxStock = product.stock_maximo;
+    console.log(datosActualizados);
+    if(datosActualizados.stock <= maxStock) {
+      console.log('si esta dentro del rango')
+      ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
+          if (err) {
+              return res.status(500).send(`error al actualizar el producto: ${err}`);
+          }
+          return res.status(200).send(updatedProduct);
+      });
+    } else {
+      return res.status(500)
+        .send({type: 'max_stock', message: 'Producto sobrepasa limite en almacen'});
+  }
 }
 
 function deleteProducto(req, res) {
