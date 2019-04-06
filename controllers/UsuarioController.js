@@ -21,7 +21,7 @@ function login(req, res) {
     } else if(!user) {
       return res.status(401).send({typeError: 1, msg: 'Error de autenticación'});
     } else {
-      if(user.sucursal !== 'none') {
+      if(user.sucursal !== 'none' || user.sucursal === 'admin') {
         let payload = {
           subject: user._id
         };
