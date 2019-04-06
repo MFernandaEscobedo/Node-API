@@ -146,13 +146,18 @@ async function putProducto(req, res) {
     const minStock = product.stock_minimo;
     const maxStock = product.stock_maximo;
     console.log(datosActualizados);
+    // 50 10 50 100
     if(datosActualizados.stock <= maxStock) {
-      console.log('si esta dentro del rango')
+      console.log('no esta dentro del rango de max stock');
       ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
           if (err) {
               return res.status(500).send(`error al actualizar el producto: ${err}`);
           }
-          return res.status(200).send(updatedProduct);
+          if(datosActualizados.stock >= minStock) {
+              return res.status(200).send(updatedProduct);
+          } else {
+            return res.status(200).send({product: updatedProduct, type: 'min_stock', message: 'Producto insuficiente en almacen'});
+          }
       });
     } else {
       return res.status(500)
