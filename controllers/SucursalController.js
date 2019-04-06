@@ -54,7 +54,7 @@ function postSucursal(req, res) {
 function putSucursal(req, res) {
   let id = req.params.id;
   let body = req.body;
-  SucursalSchema.findOneAndUpdate({"_id":id}, body, {new: true}, (err, updatedSucursal) => {
+  SucursalSchema.findOneAndUpdate({_id: id}, body, {new: true}, (err, updatedSucursal) => {
     if(err) {
       res.status(500).send(`error al actualizar la sucursal: ${err}`);
     }
@@ -71,10 +71,30 @@ function deleteSucursal(req, res) {
     res.status(200).send(deletedSucursal);
   });
 }
+
+async function findSucursal(req, res) {
+    let value = req.params.valor;
+    // cursor = db.ciudades.find({$or:[{ciudad:/^M/},{ciudad:/^Z/}]});
+    /*
+    { $or:[{nombre: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {ciudad: {$regex: ".*" + value + ".*", $options: "mi"}}]}
+    */
+    SucursalSchema.find({ $or:[{nombre: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {ciudad: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {estado: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {pais: {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, sucursales) => {
+        if(err) {
+            res.status(500).send('error al buscar sucursales');
+        }
+        res.status(200).send(sucursales);
+    });
+}
+
 module.exports = {
   getSucursales,
   getSucursalById,
   postSucursal,
   putSucursal,
-  deleteSucursal
+  deleteSucursal,
+  findSucursal
 }

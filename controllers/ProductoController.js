@@ -142,11 +142,25 @@ async function putProducto(req, res) {
     const id = req.params.id;
     const datosActualizados = req.body;
     const product = await ProductoSchema.findOne({_id: id});
-    console.log(product)
+
+    ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
+        if (err) {
+          return res.status(500).send(`error al actualizar el producto: ${err}`);
+        }
+        return res.status(200).send(updatedProduct);
+      });
+}
+
+async function putProductoStock(req, res) {
+    const id = req.params.id;
+    const datosActualizados = req.body;
+    const product = await ProductoSchema.findOne({_id: id});
     const minStock = product.stock_minimo;
     const maxStock = product.stock_maximo;
     console.log(datosActualizados);
+    console.log(maxStock);
     // 50 10 50 100
+
     if(datosActualizados.stock <= maxStock) {
       console.log('no esta dentro del rango de max stock');
       ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
@@ -184,5 +198,6 @@ module.exports = {
     getProductoById,
     postProducto,
     putProducto,
+    putProductoStock,
     deleteProducto
 }

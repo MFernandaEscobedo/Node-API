@@ -42,6 +42,7 @@ api.get('/productos/:num/:offset', ProductoController.getProductos4);
 api.get('/producto/:id', ProductoController.getProductoById);
 api.post('/producto', ProductoController.postProducto);
 api.put('/producto/:id', ProductoController.putProducto);
+api.put('/producto-stock/:id', ProductoController.putProductoStock);
 api.delete('/producto/:id', ProductoController.deleteProducto);
 
 // Proveedor
@@ -72,12 +73,12 @@ api.put('/venta/:id', VentaController.putVenta);
 api.delete('/venta/:id', VentaController.deleteVenta);
 
 // sucursal
-
+api.get('/buscar-sucursal/:valor', SucursalController.findSucursal);
 api.get('/sucursales', SucursalController.getSucursales);
 api.get('/sucursal/:id', SucursalController.getSucursalById);
 api.post('/sucursal', SucursalController.postSucursal);
 api.put('/sucursal/:id', SucursalController.putSucursal);
-api.delete('/sucursal/:id', SucursalController.deleteSucursal);
+api.delete('/sucursal/:id', SucursalController.deleteSucursal);;
 
 api.post('/upload-image', (req, res) => {
     res.send(req.files);
