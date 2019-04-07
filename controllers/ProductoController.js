@@ -191,6 +191,23 @@ function deleteProducto(req, res) {
     });
 }
 
+function findProducto(req, res) {
+  let value = req.params.valor;
+  // find({ "unusual": {"$elemMatch":{"defindex":363,"_particleEffect":{"$in":[6,19]}  }} })
+  console.log(value);
+  ProductoSchema.find({$or: [{categorias: {$elemMatch: {nombre: {$regex: ".*" + value + ".*", $options: "mi"}}}},
+  {nombre: {$regex: ".*" + value + ".*", $options: "mi"}},
+  // {codigo: {$regex: ".*" + value + ".*", $options: "mi"}},
+  {modelo: {$regex: ".*" + value + ".*", $options: "mi"}},
+  // {precio_venta: {$regex: ".*" + value + ".*", $options: "mi"}},
+  {presentacion: {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, ventas) => {
+    if(err) {
+      return res.status(500).send('error al buscar las ventas');
+    }
+    return res.status(200).send(ventas);
+  });
+}
+
 module.exports = {
     getProductosLength,
     getProductos4,
@@ -199,5 +216,6 @@ module.exports = {
     postProducto,
     putProducto,
     putProductoStock,
-    deleteProducto
+    deleteProducto,
+    findProducto
 }
