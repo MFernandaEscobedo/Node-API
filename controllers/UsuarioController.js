@@ -144,6 +144,7 @@ function postUsuario(req, res) {
 function putUsuario(req, res) {
     const id = req.params.id;
     const datosActualizados = req.body;
+    datosActualizados.contrasena = encrypt(datosActualizados.contrasena);
     UsuarioSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedUser) => {
         if(err) {
             res.status(500).send(`error al actualizar al usuario: ${err}`);
