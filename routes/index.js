@@ -14,8 +14,13 @@ const ProveedorController = require('./../controllers/ProveedorController');
 const UsuarioController = require('./../controllers/UsuarioController');
 const VentaController = require('./../controllers/VentaController');
 const SucursalController = require('./../controllers/SucursalController');
-// Categoria
+const LogController = require('./../controllers/LogController');
 
+// log
+api.get('/logs', LogController.getLogs);
+api.post('/log', LogController.postLog);
+
+// Categoria
 api.get('/categorias/length', CategoriaController.getCategoriasLength);
 api.get('/categorias', CategoriaController.getCategorias);
 api.get('/categorias/:num/:offset', CategoriaController.getCategoriasPagination);

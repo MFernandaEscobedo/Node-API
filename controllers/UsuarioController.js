@@ -96,14 +96,15 @@ function encriptarPwd(user, pass) {
 }
 
 function encrypt(pass){
-  var cipher = crypto.createCipher('aes-256-ctr', 'caveparacifrado');
+  console.log(pass);
+  var cipher = crypto.createCipher("aes-256-ctr", 'caveparacifrado');
   var crypted = cipher.update(pass,'utf8','hex');
   crypted += cipher.final('hex');
   return crypted;
 }
 
 function decrypt(pass){
-  var decipher = crypto.createDecipher('aes-256-ctr', 'caveparacifrado');
+  var decipher = crypto.createDecipher("aes-256-ctr", 'caveparacifrado');
   var dec = decipher.update(pass,'hex','utf8');
   dec += decipher.final('utf8');
   return dec;
@@ -144,7 +145,9 @@ function postUsuario(req, res) {
 function putUsuario(req, res) {
     const id = req.params.id;
     const datosActualizados = req.body;
-    datosActualizados.contrasena = encrypt(datosActualizados.contrasena);
+    if(datosActualizados.contrasena) {
+      datosActualizados.contrasena = encrypt(datosActualizados.contrasena);
+    }
     UsuarioSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedUser) => {
         if(err) {
             res.status(500).send(`error al actualizar al usuario: ${err}`);
