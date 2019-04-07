@@ -80,7 +80,16 @@ function deleteProveedor(req, res) {
 
 async function findProvider(req, res) {
     let value = req.params.valor;
-    ProveedorSchema.find({"nombre": {$regex: ".*" + value + ".*", $options: "mi"}}, (err, proveedores) => {
+    ProveedorSchema.find({$or: [{nombre: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {nombre_empresa: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {pais: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {estado: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {ciudad: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {domicilio: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {email_empresa: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {email: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {telefono: {$regex: ".*" + value + ".*", $options: "mi"}},
+    {telefono_empresa: {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, proveedores) => {
         if(err) {
             res.status(500).send('error al buscar proveedores');
         }

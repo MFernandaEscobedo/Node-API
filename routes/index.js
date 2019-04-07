@@ -46,7 +46,6 @@ api.put('/producto-stock/:id', ProductoController.putProductoStock);
 api.delete('/producto/:id', ProductoController.deleteProducto);
 
 // Proveedor
-
 api.get('/proveedores', ProveedorController.getProveedores);
 api.get('/proveedor/:id', ProveedorController.getProveedorById);
 api.post('/proveedor', ProveedorController.postProveedor);
