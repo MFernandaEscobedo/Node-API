@@ -64,7 +64,7 @@ api.post('/usuario/login', UsuarioController.login);
 api.post('/usuario/verificar', UsuarioController.verifyPermission);
 
 // Venta
-
+api.get('/buscar-venta/:valor', VentaController.findVenta);
 api.get('/ventas', VentaController.getVentas);
 api.get('/venta/:id', VentaController.getVentaById);
 api.post('/venta', VentaController.postVenta);

@@ -40,6 +40,7 @@ async function postCompra(req, res) {
     const compras = await CompraSchema.find();
     const contadorCompras = compras.length;
     compra.proveedor = datos.proveedor;
+    compra.empleado = datos.empleado;
     compra.numero_compra = contadorCompras + 1;
     compra.total = datos.total;
     compra.productos = datos.productos;

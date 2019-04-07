@@ -8,6 +8,10 @@ const CompraSchema = Schema({
       nombre: String,
       id: String
     },
+    empleado: {
+      nombre: String,
+      id: String
+    },
     fecha: {type: Date, default: Date.now()},
     numero_compra: Number,
     total: Number,

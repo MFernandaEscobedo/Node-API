@@ -85,10 +85,23 @@ function deleteVenta(req, res) {
     });
 }
 
+function findVenta(req, res) {
+  let value = req.params.valor;
+  console.log(value);
+  VentaSchema.find({$or: [{"empleado.nombre": {$regex: ".*" + value + ".*", $options: "mi"}},
+  {numero_venta: parseInt(value, 10)}]}, (err, ventas) => {
+    if(err) {
+      return res.status(500).send('error al buscar las ventas');
+    }
+    return res.status(200).send(ventas);
+  });
+}
+
 module.exports = {
     getVentas,
     getVentaById,
     postVenta,
     putVenta,
-    deleteVenta
+    deleteVenta,
+    findVenta
 }
