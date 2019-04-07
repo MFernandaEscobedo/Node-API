@@ -2,6 +2,7 @@
 
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 function getUsuarios(req, res) {
     UsuarioSchema.find({}, (err, usuarios) => {
@@ -15,6 +16,7 @@ function getUsuarios(req, res) {
 function login(req, res) {
   // hay que verificar que el usuario ya tenga una sucursal
   let userData = req.body;
+  userData.contrasena = encrypt(userData.contrasena);
   UsuarioSchema.findOne({email: userData.email, contrasena: userData.contrasena}, (err, user) => {
     if(err) {
         return res.status(500).send(`error: ${err}`);
@@ -88,20 +90,54 @@ function verifyValidToken(req, res) {
   }
 }
 
+function encriptarPwd(user, pass) {
+  let hmac = crypto.createHmac('sha1', user).update(pass).digest('hex');
+  return hmac;
+}
+
+function encrypt(pass){
+  var cipher = crypto.createCipher('aes-256-ctr', 'caveparacifrado');
+  var crypted = cipher.update(pass,'utf8','hex');
+  crypted += cipher.final('hex');
+  return crypted;
+}
+
+function decrypt(pass){
+  var decipher = crypto.createDecipher('aes-256-ctr', 'caveparacifrado');
+  var dec = decipher.update(pass,'hex','utf8');
+  dec += decipher.final('utf8');
+  return dec;
+}
+
+function decryptPass(req, res) {
+  let contrasena = req.body.contrasena;
+  return res.status(200).send({contrasena: decrypt(contrasena)});
+}
+
 function postUsuario(req, res) {
     const datos = req.body;
     let usuario = new UsuarioSchema();
+
     usuario.nombre = datos.nombre;
-    usuario.contrasena = datos.contrasena;
+    usuario.contrasena = encrypt(datos.contrasena);
     usuario.rol = datos.rol;
     usuario.email = datos.email;
     usuario.telefono = datos.telefono;
-
-    usuario.save((err, userStore) => {
-        if(err) {
-            res.status(500).send(`error al guardar nuevo usuario: ${err}`);
-        }
-        res.status(200).send(userStore);
+    UsuarioSchema.find({email: datos.email}, (err, usuarios) => {
+      if(err) {
+        return res.status(500).send('error al obtener el usuario');
+      }
+      if(usuarios.length !== 0) {
+        return res.status(500).send({type: 'email-utilizado', message: 'Este email ya esta siendo utilizado'});
+      } else {
+        usuario.save((err, userStore) => {
+            if(err) {
+                res.status(500).send(`error al guardar nuevo usuario: ${err}`);
+            }
+            console.log(userStore);
+            res.status(200).send(userStore);
+        });
+      }
     });
 }
 
@@ -134,5 +170,6 @@ module.exports = {
     deleteUsuario,
     login,
     verifyValidToken,
-    verifyPermission
+    verifyPermission,
+    decryptPass
 }

@@ -62,6 +62,7 @@ api.put('/usuario/:id', UsuarioController.putUsuario);
 api.delete('/usuario/:id', UsuarioController.deleteUsuario);
 api.post('/usuario/login', UsuarioController.login);
 api.post('/usuario/verificar', UsuarioController.verifyPermission);
+api.post('/usuario/decrypt-pass', UsuarioController.decryptPass);
 
 // Venta
 api.get('/buscar-venta/:valor', VentaController.findVenta);
