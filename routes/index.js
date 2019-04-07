@@ -27,13 +27,12 @@ api.get('/categorias/:categoriesId/productos', CategoriaController.getProductsBy
 api.get('/buscar-categoria/:valor', CategoriaController.findCategory);
 
 // Compra
-
+api.get('/buscar-compra/:valor', CompraController.findCompra);
 api.get('/compras', CompraController.getCompras);
 api.get('/compra/:id', CompraController.getCompraById);
 api.post('/compra', CompraController.postCompra);
 api.put('/compra/:id', CompraController.putCompra);
 api.delete('/compra/:id', CompraController.deleteCompra);
-api.get('/buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Producto
 api.get('/productos/length', ProductoController.getProductosLength);
@@ -51,7 +50,7 @@ api.get('/proveedor/:id', ProveedorController.getProveedorById);
 api.post('/proveedor', ProveedorController.postProveedor);
 api.put('/proveedor/:id', ProveedorController.putProveedor);
 api.delete('/proveedor/:id', ProveedorController.deleteProveedor);
-api.get('buscar-proveedor/:valor', ProveedorController.findProvider);
+api.get('/buscar-proveedor/:valor', ProveedorController.findProvider);
 
 // Usuario
 api.get('/usuario/token', UsuarioController.verifyValidToken);

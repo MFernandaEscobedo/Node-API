@@ -75,10 +75,22 @@ function deleteCompra(req, res) {
     });
 }
 
+function findCompra(req, res) {
+  let value = req.params.valor;
+  console.log(value);
+  CompraSchema.find({$or: [{"empleado.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}, {"proveedor.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, compras) => {
+    if(err) {
+      return res.status(500).send('error al buscar las compras');
+    }
+    return res.status(200).send(compras);
+  });
+}
+
 module.exports = {
     getCompras,
     getCompraById,
     postCompra,
     putCompra,
-    deleteCompra
+    deleteCompra,
+    findCompra
 }
