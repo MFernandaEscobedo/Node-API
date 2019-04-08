@@ -89,13 +89,7 @@ async function postProducto(req, res) {
     if (productosPorCodigo.length > 0) {
       console.log('aumentando el stock server');
         let numeroStock = productosPorCodigo[0].stock;
-        ProductoSchema.findOneAndUpdate({
-            "codigo": datos.codigo
-        }, {
-            "stock": numeroStock + 1
-        }, {
-            new: true
-        }, (err, updatedProduct) => {
+        ProductoSchema.findOneAndUpdate({"codigo": datos.codigo}, {"stock": numeroStock + 1}, {new: true}, (err, updatedProduct) => {
             if (err) {
                 res.status(500).send(`error al actualizar el producto: ${err}`);
             }
@@ -127,11 +121,7 @@ async function postProducto(req, res) {
 }
 
 function updateHelper(datos, id) {
-    ProductoSchema.findOneAndUpdate({
-        "_id": id
-    }, datos, {
-        new: true
-    }, (err, updatedProduct) => {
+    ProductoSchema.findOneAndUpdate({"_id": id}, datos, {new: true}, (err, updatedProduct) => {
         if (err) {
             res.status(500).send(`error al actualizar el producto: ${err}`);
         }
@@ -162,7 +152,6 @@ async function putProductoStock(req, res) {
     // 50 10 50 100
 
     if(datosActualizados.stock <= maxStock) {
-      console.log('no esta dentro del rango de max stock');
       ProductoSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedProduct) => {
           if (err) {
               return res.status(500).send(`error al actualizar el producto: ${err}`);
