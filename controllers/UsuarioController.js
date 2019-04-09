@@ -3,6 +3,7 @@
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const moment = require('moment');
 
 function getUsuarios(req, res) {
     UsuarioSchema.find({}, (err, usuarios) => {
@@ -25,7 +26,9 @@ function login(req, res) {
     } else {
       if(user.sucursal !== 'none' || user.sucursal === 'admin') {
         let payload = {
-          subject: user._id
+          subject: user._id,
+          iat: moment().unix(),
+          exp: moment().add(7, 'days').unix()
         };
         let token = jwt.sign(payload, 'clavesecreta');
         return res.status(200).send({token, user});
@@ -75,16 +78,22 @@ function verifyValidToken(req, res) {
   let token = req.headers['authorization'].split(' ')[1];
   if(token) {
     let payload = jwt.verify(token, 'clavesecreta');
-    UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
-      if(err) {
-        res.status(500).end('error al decodificar el token');
-      }
-      if(user) {
-        return res.status(200).send(true);
-      } else {
-        return res.status(401).send(false);
-      }
-    });
+    console.log(payload.exp, Date.now());
+    if(payload.exp <= moment().unix()) {
+      return res.status(500).send('el token ha expirado prro tss');
+      console.log('el token ha expirado prro');
+    } else {
+      UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
+        if(err) {
+          res.status(500).end('error al decodificar el token');
+        }
+        if(user) {
+          return res.status(200).send(true);
+        } else {
+          return res.status(401).send(false);
+        }
+      });
+    }
   } else {
     return res.status(500).send(false);
   }
