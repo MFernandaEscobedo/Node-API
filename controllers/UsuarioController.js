@@ -17,8 +17,10 @@ function getUsuarios(req, res) {
 function login(req, res) {
   // hay que verificar que el usuario ya tenga una sucursal
   let userData = req.body;
-  userData.contrasena = encrypt(userData.contrasena);
-  UsuarioSchema.findOne({email: userData.email, contrasena: userData.contrasena}, (err, user) => {
+  const pwd = encrypt(userData.contrasena);
+
+  UsuarioSchema.findOne({email: userData.email, contrasena: pwd}, (err, user) => {
+    console.log('emai: ' + userData.email + ' pwd: ' + pwd);
     if(err) {
         return res.status(500).send(`error: ${err}`);
     } else if(!user) {
@@ -99,11 +101,6 @@ function verifyValidToken(req, res) {
   }
 }
 
-function encriptarPwd(user, pass) {
-  let hmac = crypto.createHmac('sha1', user).update(pass).digest('hex');
-  return hmac;
-}
-
 function encrypt(pass){
   console.log(pass);
   var cipher = crypto.createCipher("aes-256-ctr", 'caveparacifrado');
@@ -144,7 +141,6 @@ function postUsuario(req, res) {
             if(err) {
                 res.status(500).send(`error al guardar nuevo usuario: ${err}`);
             }
-            console.log(userStore);
             res.status(200).send(userStore);
         });
       }
