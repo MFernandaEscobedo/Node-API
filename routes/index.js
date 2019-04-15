@@ -41,6 +41,7 @@ api.delete('/compra/:id', CompraController.deleteCompra);
 
 // Producto
 api.get('/buscar-producto/:valor', ProductoController.findProducto);
+api.get('/buscar-producto-codigo/:valor', ProductoController.findProductoCodigo);
 api.get('/productos/length', ProductoController.getProductosLength);
 api.get('/productos', ProductoController.getProductos);
 api.get('/productos/:num/:offset', ProductoController.getProductos4);

@@ -191,7 +191,17 @@ function findProducto(req, res) {
   // {precio_venta: {$regex: ".*" + value + ".*", $options: "mi"}},
   {presentacion: {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, ventas) => {
     if(err) {
-      return res.status(500).send('error al buscar las ventas');
+      return res.status(500).send('error al buscar los porudctos');
+    }
+    return res.status(200).send(ventas);
+  });
+}
+
+function findProductoCodigo(req, res) {
+  let value = req.params.valor;
+  ProductoSchema.find({codigo: value}, (err, ventas) => {
+    if(err) {
+      return res.status(500).send('error al buscar el producto');
     }
     return res.status(200).send(ventas);
   });
@@ -206,5 +216,6 @@ module.exports = {
     putProducto,
     putProductoStock,
     deleteProducto,
-    findProducto
+    findProducto,
+    findProductoCodigo
 }
