@@ -72,6 +72,7 @@ api.post('/usuario/decrypt-pass', UsuarioController.decryptPass);
 
 // Venta
 api.get('/buscar-venta/:valor', VentaController.findVenta);
+api.get('/buscar-venta/:from/:to', VentaController.findVentaFecha);
 api.get('/ventas', VentaController.getVentas);
 api.get('/venta/:id', VentaController.getVentaById);
 api.post('/venta', VentaController.postVenta);

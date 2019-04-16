@@ -3,6 +3,7 @@
 const VentaSchema = require('./../models/VentaSchema');
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 function getVentas(req, res) {
   let token = req.headers['authorization'].split(' ')[1];
@@ -50,6 +51,9 @@ async function postVenta(req, res) {
   venta.total = datos.total;
   venta.sucursal = datos.sucursal;
   venta.productos = datos.productos;
+  let date = new Date();
+  date.setHours(date.getHours() - 5);
+  venta.fecha = date;
 
   // verificar que el producto que se quiere vender si tenga stock suficiente
   for(let i = 0; i < datos.productos.length; i++) {
@@ -103,11 +107,29 @@ function findVenta(req, res) {
   });
 }
 
+function findVentaFecha(req, res) {
+  let from = new Date(req.params.from.split(' GMT')[0]);
+  from.setHours(from.getHours() - 5);
+  let to = new Date(req.params.to.split(' GMT')[0]);
+  to.setHours(to.getHours() - 5);
+  VentaSchema.find({fecha: {
+       $gte: from,
+       $lt: to
+    }
+  }, (err, ventas) => {
+    if(err) {
+      return res.status(500).send('error al buscar las ventas');
+    }
+    return res.status(200).send(ventas);
+  });
+}
+
 module.exports = {
     getVentas,
     getVentaById,
     postVenta,
     putVenta,
     deleteVenta,
-    findVenta
+    findVenta,
+    findVentaFecha
 }
