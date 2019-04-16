@@ -4,7 +4,7 @@ const VentaSchema = require('./../models/VentaSchema');
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-
+let numeroVenta = 1;
 function getVentas(req, res) {
   let token = req.headers['authorization'].split(' ')[1];
   if(token) {
@@ -41,13 +41,11 @@ async function postVenta(req, res) {
   const datos = req.body;
 
   const ventas = await VentaSchema.find();
-
-  const contadorVentas = ventas.length;
-
   let succesVenta = 0;
 
   venta.empleado = datos.empleado;
-  venta.numero_venta = contadorVentas + 1;
+  venta.numero_venta = numeroVenta;
+  numeroVenta ++;
   venta.total = datos.total;
   venta.sucursal = datos.sucursal;
   venta.productos = datos.productos;
@@ -62,7 +60,6 @@ async function postVenta(req, res) {
       succesVenta ++;
     }
   }
-  console.log('succesVenta: ' + succesVenta + ' len: ' + datos.productos.length);
   if(succesVenta === datos.productos.length) {
     venta.save((err, saleStore) => {
         if(err) {

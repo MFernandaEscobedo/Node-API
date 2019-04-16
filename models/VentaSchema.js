@@ -3,8 +3,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// let date = new Date();
-// date.setHours(date.getHours() - 5);
 const VentaSchema = Schema({
   empleado: {
     nombre: String,
