@@ -3,6 +3,9 @@
 const CompraSchema = require('./../models/CompraSchema');
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
+
+let numeroCompra = 1;
 
 function getCompras(req, res) {
   let token = req.headers['authorization'].split(' ')[1];
@@ -10,14 +13,14 @@ function getCompras(req, res) {
     let payload = jwt.verify(token, 'clavesecreta');
     UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
       if(err) {
-        return res.status(404).send('no se puede encontrar e usuario');
+        return res.status(500).send('error al obtener el usuario');
       }
       if(user) {
         CompraSchema.find({sucursal: user.sucursal}, (err, compras) => {
             if(err) {
-                return res.status(500).send(`error al obtener las compras: ${err}`);
+                res.status(500).send(`error al obtener las compras: ${err}`);
             }
-            return res.status(200).send(compras);
+            res.status(200).send(compras);
         });
       }
     });
@@ -26,7 +29,7 @@ function getCompras(req, res) {
 
 function getCompraById(req, res) {
     const id = req.params.id;
-    CompraSchema.findById(id, (err, compra) => {
+    CompraSchema.findOne({"_id": id}, (err, compra) => {
         if(err) {
             res.status(500).send(`error al obtener la compra: ${err}`);
         }
@@ -35,31 +38,50 @@ function getCompraById(req, res) {
 }
 
 async function postCompra(req, res) {
-    let compra = new CompraSchema();
-    const datos = req.body;
-    const compras = await CompraSchema.find();
-    const contadorCompras = compras.length;
-    compra.proveedor = datos.proveedor;
-    compra.empleado = datos.empleado;
-    compra.numero_compra = contadorCompras + 1;
-    compra.total = datos.total;
-    compra.productos = datos.productos;
-    compra.sucursal = datos.sucursal;
+  let compra = new CompraSchema();
 
-    compra.save((err, buyStore) => {
+  const datos = req.body;
+
+  const compras = await CompraSchema.find();
+  let succesCompra = 0;
+
+  compra.empleado = datos.empleado;
+  compra.proveedor = datos.proveedor;
+  compra.numero_compra = numeroCompra;
+  numeroCompra ++;
+  compra.total = datos.total;
+  compra.sucursal = datos.sucursal;
+  compra.productos = datos.productos;
+  let date = new Date();
+  date.setHours(date.getHours() - 5);
+  compra.fecha = date;
+
+  // verificar que el producto que se quiere comprar no pase del stock maximo
+  // si todos los productos no pasan del stock maximo entonces si se puede hacer la compra, si alguno sorepasa tons no se hace la compra
+  for(let i = 0; i < datos.productos.length; i++) {
+    let producto = datos.productos[i];
+    if((producto['cantidad'] + producto.stock) <= producto.stock_maximo) {
+      succesCompra ++;
+    }
+  }
+  if(succesCompra === datos.productos.length) {
+    compra.save((err, saleStore) => {
         if(err) {
-            res.status(500).send(`error al guardar nueva compra: ${err}`);
+          return  res.status(500).send(`error al guardar nueva compra: ${err}`);
         }
-        res.status(200).send(buyStore);
+        return res.status(200).send(saleStore);
     });
+  } else {
+    return res.status(500).send({type: 'stock', message: 'Producto pasa del estock maximo'});
+  }
 }
 
 function putCompra(req, res) {
     const id = req.params.id;
-    let datosActualizados = req.body;
+    const datosActualizados = req.body;
     CompraSchema.findOneAndUpdate({"_id": id}, datosActualizados, {new: true}, (err, updatedPurchase) => {
         if(err) {
-            res.status(500).send(`error al actualizar compra: ${err}`);
+            res.status(500).send(`error al actualizar la compra: ${err}`);
         }
         res.status(200).send(updatedPurchase);
     });
@@ -69,7 +91,7 @@ function deleteCompra(req, res) {
     const id = req.params.id;
     CompraSchema.findOneAndDelete({_id: id}, (err, deletedPurchase) => {
         if(err) {
-            res.status(500).send(`error al eliminar compra: ${err}`);
+            res.status(500).send(`error al eliminar la compra: ${err}`);
         }
         res.status(200).send(deletedPurchase);
     });
@@ -78,7 +100,24 @@ function deleteCompra(req, res) {
 function findCompra(req, res) {
   let value = req.params.valor;
   console.log(value);
-  CompraSchema.find({$or: [{"empleado.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}, {"proveedor.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, compras) => {
+  CompraSchema.find({$or: [{"empleado.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, compras) => {
+    if(err) {
+      return res.status(500).send('error al buscar las compras');
+    }
+    return res.status(200).send(compras);
+  });
+}
+
+function findCompraFecha(req, res) {
+  let from = new Date(req.params.from.split(' GMT')[0]);
+  from.setHours(from.getHours() - 5);
+  let to = new Date(req.params.to.split(' GMT')[0]);
+  to.setHours(to.getHours() - 5);
+  CompraSchema.find({fecha: {
+       $gte: from,
+       $lt: to
+    }
+  }, (err, compras) => {
     if(err) {
       return res.status(500).send('error al buscar las compras');
     }
@@ -92,5 +131,6 @@ module.exports = {
     postCompra,
     putCompra,
     deleteCompra,
-    findCompra
+    findCompra,
+    findCompraFecha
 }

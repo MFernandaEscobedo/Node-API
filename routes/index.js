@@ -33,6 +33,7 @@ api.get('/buscar-categoria/:valor', CategoriaController.findCategory);
 
 // Compra
 api.get('/buscar-compra/:valor', CompraController.findCompra);
+api.get('/buscar-compra/:from/:to', CompraController.findCompraFecha);
 api.get('/compras', CompraController.getCompras);
 api.get('/compra/:id', CompraController.getCompraById);
 api.post('/compra', CompraController.postCompra);
