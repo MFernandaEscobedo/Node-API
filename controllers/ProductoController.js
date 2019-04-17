@@ -186,7 +186,7 @@ function findProducto(req, res) {
   console.log(value);
   ProductoSchema.find({$or: [{categorias: {$elemMatch: {nombre: {$regex: ".*" + value + ".*", $options: "mi"}}}},
   {nombre: {$regex: ".*" + value + ".*", $options: "mi"}},
-  // {codigo: {$regex: ".*" + value + ".*", $options: "mi"}},
+  {codigo: {$regex: ".*" + value + ".*", $options: "mi"}},
   {modelo: {$regex: ".*" + value + ".*", $options: "mi"}},
   // {precio_venta: {$regex: ".*" + value + ".*", $options: "mi"}},
   {presentacion: {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, ventas) => {
