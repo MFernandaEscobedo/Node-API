@@ -4,7 +4,36 @@ const VentaSchema = require('./../models/VentaSchema');
 const UsuarioSchema = require('./../models/UsuarioSchema');
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
+
+const app = require('./../app');
+const socket = require('socket.io');
+const http = require('http');
+const server = http.Server(app);
+
+const io = socket(server);
+
+io.on('connection', (socket) => {
+    console.log('user connected');
+
+    socket.on('update-profile', (data) => {
+      console.log('evento al actualizar el perfil')
+      socket.emit('detected-update-profile', data);
+    });
+
+    socket.on('login', (data) => {
+      console.log('login')
+      socket.empleado = data._id;
+    });
+
+    socket.on('add-sale', (data) => {
+      console.log('evento al realizar una venta')
+      // debo saber cuales de mis empleados tienen la posibilidad de ver en tiempo real cuando alguien realizar una venta en una sucursal
+      io.emit('detected-add-sale', data);
+    });
+});
+
 let numeroVenta = 1;
+
 function getVentas(req, res) {
   let token = req.headers['authorization'].split(' ')[1];
   if(token) {

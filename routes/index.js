@@ -15,10 +15,15 @@ const UsuarioController = require('./../controllers/UsuarioController');
 const VentaController = require('./../controllers/VentaController');
 const SucursalController = require('./../controllers/SucursalController');
 const LogController = require('./../controllers/LogController');
+const NotificacionController = require('./../controllers/NotificacionController');
 
 // log
 api.get('/logs', LogController.getLogs);
 api.post('/log', LogController.postLog);
+
+// notificaciones
+api.get('/notificaciones', NotificacionController.getNotificaciones);
+api.post('/notificacion', NotificacionController.postNotificacion);
 
 // Categoria
 api.get('/categorias/length', CategoriaController.getCategoriasLength);
