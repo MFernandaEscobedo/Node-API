@@ -25,5 +25,14 @@ module.exports = (io) => {
         // }
         io.emit('detected-add-sale', data);
       });
+
+      socket.on('updated-permissions', (data) => {
+        console.log(data);
+        io.emit('detected-update-permissions', data);
+      });
+
+      socket.on('register-new-user', (data) => {
+        io.emit('detected-register-new-user', data);
+      });
   });
 };
