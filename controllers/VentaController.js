@@ -41,6 +41,10 @@ async function getMoneyAllSales(req, res) {
   }
 }
 
+function getSalesDate(req, res) {
+  
+}
+
 function getVentaById(req, res) {
     const id = req.params.id;
     VentaSchema.findOne({"_id": id}, (err, venta) => {
