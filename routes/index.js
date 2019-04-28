@@ -37,6 +37,7 @@ api.get('/categorias/:categoriesId/productos', CategoriaController.getProductsBy
 api.get('/buscar-categoria/:valor', CategoriaController.findCategory);
 
 // Compra
+api.get('/obtener-dinero-compras', CompraController.getMoneyAllPurchases);
 api.get('/buscar-compra/:valor', CompraController.findCompra);
 api.get('/buscar-compra/:from/:to', CompraController.findCompraFecha);
 api.get('/compras', CompraController.getCompras);
@@ -46,6 +47,7 @@ api.put('/compra/:id', CompraController.putCompra);
 api.delete('/compra/:id', CompraController.deleteCompra);
 
 // Producto
+api.get('/obtener-dinero-productos', ProductoController.getMoneyFromAllProducts);
 api.get('/buscar-producto/:valor', ProductoController.findProducto);
 api.get('/buscar-producto-codigo/:valor', ProductoController.findProductoCodigo);
 api.get('/productos/length', ProductoController.getProductosLength);
@@ -77,6 +79,7 @@ api.post('/usuario/verificar', UsuarioController.verifyPermission);
 api.post('/usuario/decrypt-pass', UsuarioController.decryptPass);
 
 // Venta
+api.get('/obtener-dinero-ventas', VentaController.getMoneyAllSales);
 api.get('/buscar-venta/:valor', VentaController.findVenta);
 api.get('/buscar-venta/:from/:to', VentaController.findVentaFecha);
 api.get('/ventas', VentaController.getVentas);

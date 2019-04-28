@@ -27,6 +27,20 @@ function getVentas(req, res) {
   }
 }
 
+async function getMoneyAllSales(req, res) {
+  try {
+    const sales = await VentaSchema.find();
+    let money = 0;
+    let salesLength = sales.length;
+    sales.forEach((sale, index) => {
+      money += sale.total;
+    });
+    res.status(200).send({money: money, salesLength: salesLength});
+  } catch(e) {
+    res.status(500).send('no se pudieron obtener las ventas');
+  }
+}
+
 function getVentaById(req, res) {
     const id = req.params.id;
     VentaSchema.findOne({"_id": id}, (err, venta) => {
@@ -130,5 +144,6 @@ module.exports = {
     putVenta,
     deleteVenta,
     findVenta,
-    findVentaFecha
+    findVentaFecha,
+    getMoneyAllSales
 }

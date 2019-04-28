@@ -27,6 +27,21 @@ function getCompras(req, res) {
   }
 }
 
+async function getMoneyAllPurchases(req, res) {
+  try {
+    const purchases = await CompraSchema.find();
+    let money = 0;
+    let purchasesLength = purchases.length;
+
+    purchases.forEach((purchase, index) => {
+      money += purchase.total;
+    });
+    res.status(200).send({money, purchasesLength});
+  } catch(e) {
+    res.status(500).send('no se pudieron obtener las compras');
+  }
+}
+
 function getCompraById(req, res) {
     const id = req.params.id;
     CompraSchema.findOne({"_id": id}, (err, compra) => {
@@ -132,5 +147,6 @@ module.exports = {
     putCompra,
     deleteCompra,
     findCompra,
-    findCompraFecha
+    findCompraFecha,
+    getMoneyAllPurchases
 }
