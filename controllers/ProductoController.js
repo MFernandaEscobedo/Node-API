@@ -121,7 +121,6 @@ async function postProducto(req, res) {
     "codigo": datos.codigo
   });
   if (productosPorCodigo.length > 0) {
-    console.log('aumentando el stock server');
     let numeroStock = productosPorCodigo[0].stock;
     ProductoSchema.findOneAndUpdate({
       "codigo": datos.codigo
@@ -199,9 +198,6 @@ async function putProductoStock(req, res) {
   });
   const minStock = product.stock_minimo;
   const maxStock = product.stock_maximo;
-  console.log(datosActualizados);
-  console.log(maxStock);
-  // 50 10 50 100
 
   if (datosActualizados.stock <= maxStock) {
     ProductoSchema.findOneAndUpdate({
@@ -246,7 +242,6 @@ function deleteProducto(req, res) {
 function findProducto(req, res) {
   let value = req.params.valor;
   // find({ "unusual": {"$elemMatch":{"defindex":363,"_particleEffect":{"$in":[6,19]}  }} })
-  console.log(value);
   ProductoSchema.find({
     $or: [{
         categorias: {

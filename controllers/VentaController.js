@@ -42,7 +42,7 @@ async function getMoneyAllSales(req, res) {
 }
 
 function getSalesDate(req, res) {
-  
+
 }
 
 function getVentaById(req, res) {
@@ -115,7 +115,6 @@ function deleteVenta(req, res) {
 
 function findVenta(req, res) {
   let value = req.params.valor;
-  console.log(value);
   VentaSchema.find({$or: [{"empleado.nombre": {$regex: ".*" + value + ".*", $options: "mi"}}]}, (err, ventas) => {
     if(err) {
       return res.status(500).send('error al buscar las ventas');

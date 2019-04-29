@@ -20,7 +20,6 @@ function login(req, res) {
   const pwd = encrypt(userData.contrasena);
 
   UsuarioSchema.findOne({email: userData.email, contrasena: pwd}, (err, user) => {
-    console.log('emai: ' + userData.email + ' pwd: ' + pwd);
     if(err) {
         return res.status(500).send(`error: ${err}`);
     } else if(!user) {
@@ -76,14 +75,11 @@ function verifyPermission(req, res) {
 }
 
 function verifyValidToken(req, res) {
-  console.log('si')
   let token = req.headers['authorization'].split(' ')[1];
   if(token) {
     let payload = jwt.verify(token, 'clavesecreta');
-    console.log(payload.exp, Date.now());
     if(payload.exp <= moment().unix()) {
       return res.status(500).send('el token ha expirado prro tss');
-      console.log('el token ha expirado prro');
     } else {
       UsuarioSchema.findOne({_id: payload.subject}, (err, user) => {
         if(err) {
@@ -102,7 +98,6 @@ function verifyValidToken(req, res) {
 }
 
 function encrypt(pass){
-  console.log(pass);
   var cipher = crypto.createCipher("aes-256-ctr", 'caveparacifrado');
   var crypted = cipher.update(pass,'utf8','hex');
   crypted += cipher.final('hex');

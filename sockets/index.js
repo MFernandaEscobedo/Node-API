@@ -3,8 +3,6 @@ const socketsUsuario = require('./socketsUsuario');
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-      console.log('user connected');
-
       // sockets del modelo usuarios
       socketsUsuario(io, socket);
 
@@ -19,7 +17,6 @@ module.exports = (io) => {
       });
 
       socket.on('updated-permissions', (data) => {
-        console.log(data);
         io.emit('detected-update-permissions', data);
       });
 

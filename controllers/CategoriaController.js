@@ -55,7 +55,7 @@ function getCategoriasPagination(req, res) {
       if(err) {
         return res.status(404).send('no se encontro el usuario');
       }
-      
+
       if(user) {
         CategoriaSchema.find({sucursal: user.sucursal}, null, {skip: parseInt(offset,10), limit: parseInt(num, 10)}, (err, categorias) => {
             if(err) {
@@ -79,9 +79,7 @@ function getCategoriaById(req, res) {
 }
 
 function postCategoria(req, res) {
-    console.log('post/categoria');
     let categoria = new CategoriaSchema();
-    console.log(req.body);
     categoria.nombre = req.body.nombre;
     categoria.sucursal = req.body.sucursal;
 
