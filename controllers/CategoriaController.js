@@ -70,7 +70,7 @@ function getCategoriasPagination(req, res) {
 
 function getCategoriaById(req, res) {
     const id = req.params.id;
-    CategoriaSchema.findById(id, (err, categoria) => {
+    CategoriaSchema.find({id: id}, (err, categoria) => {
         if(err) {
             res.status(500).send(`error al obtener la categoria: ${err}`);
         }

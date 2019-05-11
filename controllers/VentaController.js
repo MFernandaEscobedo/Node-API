@@ -76,7 +76,7 @@ async function postVenta(req, res) {
   // verificar que el producto que se quiere vender si tenga stock suficiente
   for(let i = 0; i < datos.productos.length; i++) {
     let producto = datos.productos[i];
-    if(producto['cantidad'] <= producto.stock) {
+    if(Number(producto['cantidad']) <= producto.stock) {
       succesVenta ++;
     }
   }

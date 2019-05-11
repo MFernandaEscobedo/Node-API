@@ -75,7 +75,8 @@ async function postCompra(req, res) {
   // si todos los productos no pasan del stock maximo entonces si se puede hacer la compra, si alguno sorepasa tons no se hace la compra
   for(let i = 0; i < datos.productos.length; i++) {
     let producto = datos.productos[i];
-    if((producto['cantidad'] + producto.stock) <= producto.stock_maximo) {
+    console.log(producto);
+    if((Number(producto['cantidad']) + producto.stock) <= producto.stock_maximo) {
       succesCompra ++;
     }
   }
