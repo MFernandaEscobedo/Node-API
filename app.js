@@ -13,6 +13,7 @@ const fs = require('fs');
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(express.static('dist/MOGA'));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -36,5 +37,7 @@ app.use(multer({
 }).any());
 
 app.use('/api', api);
-
+app.get('/', (req, res) => {
+    res.send('hola')
+});
 module.exports = app;

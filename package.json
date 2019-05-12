@@ -9,6 +9,7 @@
   "author": "Luis Angel Mendoza Lucio",
   "license": "ISC",
   "dependencies": {
+    "alertify": "^0.3.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

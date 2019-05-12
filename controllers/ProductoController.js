@@ -34,7 +34,7 @@ async function getMoneyFromAllProducts(req, res) {
     let money = 0;
     let productsLength = 0;
     products.forEach((product, index) => {
-      money += product.precio_venta;
+      money += (product.precio_venta * product.stock);
       productsLength += product.stock;
     });
     res.status(200).send({money: money, productLength: productsLength});
