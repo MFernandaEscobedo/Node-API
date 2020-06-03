@@ -4,7 +4,7 @@
   "description": "API de la aplicacion web de gestion e inventario de la empresa MOGA",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "author": "Luis Angel Mendoza Lucio",
   "license": "ISC",
